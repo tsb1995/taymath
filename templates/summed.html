@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title%}
+    Summed
+{% endblock %}
+
+{% block main %}
+    <span>Approximating the integral of $f(x) = {{ value }}$ from ${{ lb }}$ to ${{ ub }}$ using ${{ si }}$ subintervals</span>
+    <table class="table table-hover" action="optimized">
+        <tbody>
+            <tr class="bg-dark text-white">
+                <td>Step 1</td>
+                <td>Calculate $\Delta x$</td>
+            </tr>
+            <tr class="table-secondary">
+                <td></td>
+                <td>$\Delta x = {{ dx }}$</td>
+            </tr>
+            <tr class="bg-dark text-white">
+                <td>Step 2</td>
+                <td>Check values for $x_i$ (start at lowerbound a and add $\Delta x$ repeatedly)</td>
+            </tr>
+            {% for input in inputs %}
+                <tr class="table-secondary">
+                    <td></td>
+                    <td>$f(x_{{ loop.index - 1 }}) = f({{ input }}) = {{ outputs[loop.index - 1] }}$</td>
+                </tr>
+            {% endfor %}
+            <tr class="bg-dark text-white">
+                <td>Step 3</td>
+                <td>Multiply $f(x_i)$ and $\Delta x$ for each subinterval</td>
+            </tr>
+            {% for rectangle in rectangles %}
+                <tr class="table-secondary">
+                    <td></td>
+                    <td>$f(x_{{ loop.index - 1 }}) \Delta x = f({{ inputs[loop.index - 1]}})*{{ dx }} = {{ rectangle }}$</td>
+                </tr>
+            {% endfor %}
+            <tr class="bg-dark text-white">
+                <td>Step 4</td>
+                <td>Add up all products (rectangles) to get final approximation:</td>
+            </tr>
+            <tr class="table-secondary">
+                <td></td>
+                <td>The integral of $f(x) = {{ value }}$ from ${{ lb }}$ to ${{ ub }}$ is approximately equal to ${{ result }}$</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

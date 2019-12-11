@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Differentiated
+{% endblock %}
+
+{% block main %}
+    <div>
+        <p>Your function is $f(x) = {{ value }}$</p>
+        <p>Your Linear Approximation of $f(x)$ at $x = {{ h }}$ is ${{ lh }}$</p>
+    </div>
+        <table class="table" action="optimized">
+      <tbody>
+        <tr class="bg-dark text-white">
+            <td>Step 1</td>
+            <td>Setup L(x)</td>
+        </tr>
+        <tr class="table-secondary">
+            <td></td>
+            <td>$L(x) = f({{ a }}) + f'({{ a }})(x-{{ a }})$</td>
+        </tr>
+        <tr class="bg-dark text-white">
+            <td>Step 2</td>
+            <td>Take the Derivative</td>
+        </tr>
+        <tr class="table-secondary">
+            <td></td>
+            <td>$f'(x) = {{ fprime }}$</td>
+        </tr>
+      <tr class="bg-dark text-white">
+          <td>Step 3</td>
+          <td>Plug in values</td>
+      </tr>
+        <tr class="table-secondary">
+            <td></td>
+            <td>$f({{ a }}) = {{ fa }}$</td>
+        </tr>
+      <tr class="table-secondary">
+          <td></td>
+          <td>$f'({{ a }}) = {{ fprimea }}$</td>
+      </tr>
+      <tr class="table-secondary">
+          <td></td>
+          <td>$L(x) = {{ fa }} + [{{ fprimea }}(x - {{ a }})]$</td>
+      </tr>
+      <tr class="bg-dark text-white">
+          <td>Step 4</td>
+          <td>Use our $L(x)$ to approximate $f({{ h }})$</td>
+      </tr>
+        <tr class="table-secondary">
+            <td></td>
+            <td>$L({{ h }}) = {{ fa }} + [{{ fprimea }}({{ h }} - {{ a }})]$</td>
+        </tr>
+        <tr class="table-secondary">
+            <td></td>
+            <td> $= {{ lh }}$</td>
+        </tr>
+      </tbody>
+    </table>
+{% endblock %}

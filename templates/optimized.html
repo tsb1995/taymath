@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Optimized
+{% endblock %}
+
+{% block main %}
+    <div>
+        <p>Your function is $f(x) = {{ value }}$</p>
+        <p>Your maximum value is ${{ maximum }}$ and your minimum value is ${{ newvar }}$</p>
+    </div>
+    <table class="table table-hover" action="optimized">
+      <tbody>
+        <tr class="bg-dark text-white">
+            <td>Step 1</td>
+            <td>Take the Derivative</td>
+        </tr>
+        <tr class="table-secondary">
+            <td></td>
+            <td>$f'(x) = {{ fprime }}$</td>
+        </tr>
+        <tr class="bg-dark text-white">
+            <td>Step 2</td>
+            <td>Set $f'(x) = 0$</td>
+        </tr>
+        <tr class="table-secondary">
+            <td></td>
+            <td>$0 = {{ fprime }}$</td>
+        </tr>
+        <tr class="bg-dark text-white">
+            <td>Step 3</td>
+            <td>Solve for $x$:</td>
+        </tr>
+        {% for solution in solutions %}
+            <tr class="table-secondary">
+                <td></td>
+                <td>$x = {{ solution }}$</td>
+            </tr>
+        {% endfor %}
+        <tr class="bg-dark text-white">
+            <td>Step 4</td>
+            <td>Plug solutions and endpoints into $f(x)$:</td>
+        </tr>
+        {% for candidate in candidates %}
+            <tr class="table-secondary">
+                <td></td>
+                <td>$f({{ candidate }}) = {{values[loop.index - 1]}}$</td>
+            </tr>
+        {% endfor %}
+        <tr class="bg-dark text-white">
+            <td>Step 5</td>
+            <td>Grab the highest and lowest values</td>
+        </tr>
+        <tr class="table-secondary">
+            <td></td>
+            <td>Your maximum value is ${{ maximum }}$</td>
+        </tr>
+        <tr class="table-secondary">
+            <td></td>
+            <td>Your minimum value is ${{ newvar }}$</td>
+        </tr>
+      </tbody>
+    </table>
+{% endblock %}

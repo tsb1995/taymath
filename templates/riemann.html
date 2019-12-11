@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Riemann
+{% endblock %}
+
+{% block main %}
+    <span>Function you would like to integrate:</span>
+    <form action="/riemann" method="post">
+        <div class = "form-group">
+            <input autocomplete="off" autofocus class="form-control" name="function" placeholder="Function" type="text" id="function">
+        </div>
+        <p id="jp">Your Input Will Appear Here</p>
+        <span>Range of values (a,b):</span>
+        <div class = "form-group">
+            <input autocomplete="off" autofocus class="form-control" name="lowerbound" placeholder="Lowerbound a" type="text" id="lowerbound">
+            <input autocomplete="off" autofocus class="form-control" name="upperbound" placeholder="Upperbound b" type="text" id="upperbound">
+        </div>
+        <span>Amount of subintervals (how many rectangles?):</span>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="subintervals" placeholder="Subintervals" type="text" id="subintervals">
+        </div>
+        <div class="radio">
+          <label><input type="radio" name="sumtype" checked value="1">Left Riemann Sum</label>
+        </div>
+        <div class="radio">
+          <label><input type="radio" name="sumtype" value="2">Right Riemann Sum</label>
+        </div>
+        <button class="btn btn-primary" type="submit">Summation</button>
+    </form>
+
+    <script>
+        let value = $("#function").val();
+        $(document).ready(function(){
+            $('#function').on('input', function() {
+                let testvalue = $('#function').val();
+                $('#jp').html("$f(x) = "+testvalue+"$");
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+            });
+        })
+    </script>
+{% endblock %}

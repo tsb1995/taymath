@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Integration
+{% endblock %}
+
+{% block main %}
+    <p>Function you would like to Integrate: </p>
+    <form action="/integration" method="post">
+        <div class = "form-group">
+            <input autocomplete="off" autofocus class="form-control" name="function" placeholder="Function" type="text" id="function">
+        </div>
+        <p id="jp">Your Input Will Appear Here</p>
+        <button class="btn btn-primary" type="submit">Integrate</button>
+    </form>
+
+    <script>
+        let value = $("#function").val();
+        $(document).ready(function(){
+            $('#function').on('input', function() {
+                let testvalue = $('#function').val();
+                $('#jp').html("$f(x) = "+testvalue+"$");
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+            });
+        })
+    </script>
+
+{% endblock %}

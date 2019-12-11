@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Approximation
+{% endblock %}
+
+{% block main %}
+    <span>Function you would like to Approximate:</span>
+    <form action="/aprox" method="post">
+        <div class = "form-group">
+            <input autocomplete="off" autofocus class="form-control" name="function" placeholder="Function" type="text" id="function">
+        </div>
+        <p id="jp">Your Input Will Appear Here</p>
+        <p>To create the Linearization of f at a, L(x) = f(a) + f'(a)(x-a), we need an easy to calculate value, a,
+            and a difficult to find value for x</p>
+        <div class = "form-group">
+            <input autocomplete="off" autofocus class="form-control" name="easy" placeholder="Easy Value a" type="text" id="easy">
+            <input autocomplete="off" autofocus class="form-control" name="hard" placeholder="Difficult Value for x" type="text" id="hard">
+        </div>
+        <button class="btn btn-primary" type="submit">Approximate</button>
+    </form>
+
+    <script>
+        let value = $("#function").val();
+        $(document).ready(function(){
+            $('#function').on('input', function() {
+                let testvalue = $('#function').val();
+                $('#jp').html("$f(x) = "+testvalue+"$");
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+            });
+        })
+    </script>
+
+{% endblock %}

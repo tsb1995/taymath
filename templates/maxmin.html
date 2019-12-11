@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Max/Min
+{% endblock %}
+
+{% block main %}
+    <span>Function you would like to Max/Min:</span>
+    <form action="/maxmin" method="post">
+        <div class = "form-group">
+            <input autocomplete="off" autofocus class="form-control" name="function" placeholder="Function" type="text" id="function">
+        </div>
+        <p id="jp">Your Input Will Appear Here</p>
+        <div class = "form-group">
+            <input autocomplete="off" autofocus class="form-control" name="lowerbound" placeholder="Lowerbound" type="text" id="lowerbound">
+            <input autocomplete="off" autofocus class="form-control" name="upperbound" placeholder="Upperbound" type="text" id="upperbound">
+        </div>
+        <button class="btn btn-primary" type="submit">Optimize</button>
+    </form>
+
+    <script>
+        let value = $("#function").val();
+        $(document).ready(function(){
+            $('#function').on('input', function() {
+                let testvalue = $('#function').val();
+                $('#jp').html("$f(x) = "+testvalue+"$");
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+            });
+        })
+    </script>
+{% endblock %}
