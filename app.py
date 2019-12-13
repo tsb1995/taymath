@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect
 from sympy import *
+from helpers import apology
 
 app = Flask(__name__)
 
