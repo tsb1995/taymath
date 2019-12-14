@@ -15,6 +15,12 @@ def differentiation():
         if not request.form.get("function"):
             return apology("must provide a function", 400)
         f = request.form.get("function")
+        """
+        TODO:
+        take Function
+        analyse to find most common letter (our variable)
+        set that as the basis for symbols
+        """
         x = symbols('x')
         f = sympify(f)
 
