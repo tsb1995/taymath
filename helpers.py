@@ -2,6 +2,7 @@ import requests
 
 from flask import redirect, render_template, request, session
 from functools import wraps
+from sympy import *
 
 
 def apology(message, code=400):
@@ -36,3 +37,10 @@ def login_required(f):
 def usd(value):
     """Format value as USD."""
     return f"${value:,.2f}"
+
+def setup_symbols(f):
+    f = sympify(f)
+    for letter in [x, y, z, t, X, Y, Z, T]:
+        f = f.subs(letter, x)
+
+    return f

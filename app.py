@@ -4,6 +4,8 @@ from helpers import apology
 
 app = Flask(__name__)
 
+x, y, z, t, X, Y, Z, T = symbols('x y z t X Y Z T')
+
 @app.route('/')
 def hello():
     return render_template('index.html')
@@ -15,14 +17,8 @@ def differentiation():
         if not request.form.get("function"):
             return apology("must provide a function", 400)
         f = request.form.get("function")
-        """
-        TODO:
-        take Function
-        analyse to find most common letter (our variable)
-        set that as the basis for symbols
-        """
-        x = symbols('x')
-        f = sympify(f)
+
+        f = setup_symbols(f)
 
         # Differentiate and return latex expressions
         fprime = latex(f.diff(x))
@@ -198,6 +194,13 @@ def errorhandler(e):
     if not isinstance(e, HTTPException):
         e = InternalServerError()
     return apology(e.name, e.code)
+
+def setup_symbols(f):
+    f = sympify(f)
+    for letter in [x, y, z, t, X, Y, Z, T]:
+        f = f.subs(letter, x)
+
+    return f
 
 
 
