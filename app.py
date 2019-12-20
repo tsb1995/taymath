@@ -117,8 +117,8 @@ def maxmin():
 
         # Get input from form
         f = request.form.get("function")
-        lb = sympify(request.form.get("lowerbound"))
-        ub = sympify(request.form.get("upperbound"))
+        lb = round(sympify(request.form.get("lowerbound")), 3)
+        ub = round(sympify(request.form.get("upperbound")), 3)
 
         # Setup our symbols for SymPy
         f = setup_symbols(f)
@@ -126,7 +126,7 @@ def maxmin():
         # Get Derivative, solve for real solutions, update candidates list
         fprime = f.diff(x)
         solutions = list()
-        solutions.append(f.subs(x,0))
+        solutions.append(round(f.subs(x,0), 3))
         candidates = list()
         for solution in solutions:
             candidates.append(solution)
@@ -136,7 +136,7 @@ def maxmin():
         # Fill values list with solutions
         values = list()
         for candidate in candidates:
-            temp = f.subs(x, candidate)
+            temp = round(f.subs(x, candidate), 3)
             values.append(temp)
 
         # Find max/min of values
