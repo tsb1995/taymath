@@ -4,6 +4,7 @@ from helpers import apology
 
 app = Flask(__name__)
 
+# Convert our commonly used variables into sympy symbols
 x, y, z, t, X, Y, Z, T = symbols('x y z t X Y Z T')
 
 @app.route('/')
@@ -18,6 +19,7 @@ def differentiation():
             return apology("must provide a function", 400)
         f = request.form.get("function")
 
+        # Setup our symbols for SymPy
         f = setup_symbols(f)
 
         # Differentiate and return latex expressions
@@ -33,11 +35,12 @@ def integration():
         # Check if inputs were given
         if not request.form.get("function"):
             return apology("must provide a function", 400)
+        f = request.form.get("function")
+
+        # Setup our symbols for SymPy
+        f = setup_symbols(f)
 
         # Integrate and return latex expressions
-        f = request.form.get("function")
-        x = symbols('x')
-        f = sympify(f)
         fintegral = latex(f.integrate(x))
         value = latex(f)
         return render_template("integrated.html", value=value, fintegral=fintegral)
@@ -59,19 +62,21 @@ def riemann():
         if not request.form.get("sumtype"):
             return apology("must choose left or right", 400)
 
-        # Get inputs, check for validity and sympify
+        # Get our info from form
         f = request.form.get("function")
         sumtype = request.form.get("sumtype")
         lb = int(request.form.get("lowerbound"))
         ub = int(request.form.get("upperbound"))
         si = int(request.form.get("subintervals"))
-        x = symbols('x')
-        f = sympify(f)
-        dx = (ub - lb) / si
-        value = latex(f)
+
+        # Setup our symbols for SymPy
+        f = setup_symbols(f)
 
         # Run through Riemann Sum algorithm, creatings lists for display
         #           of inputs, outputs, and areas (their products)
+
+        value = latex(f)
+        dx = (ub - lb) / si
         inputs = list()
         if sumtype == "1":
             for i in range(0, si):
@@ -115,9 +120,8 @@ def maxmin():
         lb = sympify(request.form.get("lowerbound"))
         ub = sympify(request.form.get("upperbound"))
 
-        # Prep input for numpy / sympy
-        x = symbols('x')
-        f = sympify(f)
+        # Setup our symbols for SymPy
+        f = setup_symbols(f)
 
         # Get Derivative, solve for real solutions, update candidates list
         fprime = f.diff(x)
@@ -164,8 +168,10 @@ def aprox():
         f = request.form.get("function")
         a = request.form.get("easy")
         h = request.form.get("hard")
-        x = symbols('x')
-        f = sympify(f)
+        # Setup our symbols for SymPy
+        f = setup_symbols(f)
+
+        # Make sure a and h are numbers
         a = sympify(a)
         h = sympify(h)
         if not a.is_number:
@@ -197,9 +203,10 @@ def errorhandler(e):
 
 def setup_symbols(f):
     f = sympify(f)
+
+    # replace commonly used variables with x
     for letter in [x, y, z, t, X, Y, Z, T]:
         f = f.subs(letter, x)
-
     return f
 
 
