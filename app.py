@@ -76,23 +76,23 @@ def riemann():
         #           of inputs, outputs, and areas (their products)
 
         value = latex(f)
-        dx = (ub - lb) / si
+        dx = round((ub - lb) / si, 3)
         inputs = list()
         if sumtype == "1":
             for i in range(0, si):
-                inputs.append(dx * (i))
+                inputs.append(round(dx * (i), 3))
         if sumtype == "2":
             for i in range(0, si):
-                inputs.append(dx * (i + 1))
+                inputs.append(round(dx * (i + 1), 3))
         outputs = list()
         for input in inputs:
             temp = f.subs(x, input)
-            outputs.append(temp)
+            outputs.append(round(temp, 3))
         rectangles = list()
         for output in outputs:
             temp = output * dx
-            rectangles.append(temp)
-        result = sum(rectangles)
+            rectangles.append(round(temp, 3))
+        result = round(sum(rectangles), 3)
 
         # Choose template based on left or right sum
         if sumtype == "1":
@@ -179,11 +179,13 @@ def aprox():
         if not h.is_number:
             return apology("difficult value must be a number", 400)
 
+        a = round(a, 3)
+        h = round(h, 3)
         # Run through Linearization algorithm
         fprime = f.diff(x)
-        fa = f.subs(x, a)
-        fprimea = fprime.subs(x, a)
-        lh = fa + fprimea*(float(h)-float(a))
+        fa = round(f.subs(x, a), 3)
+        fprimea = round(fprime.subs(x, a), 3)
+        lh = round(fa + fprimea*(float(h)-float(a)), 3)
 
         # Convert to latex for MathJax reading
         value = latex(f)
