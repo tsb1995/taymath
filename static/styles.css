@@ -1,3 +1,24 @@
+body {
+	/* main website background color*/
+	background-color: #868e85;	
+}
+
+.bg-light {
+	/* navbar background set to lighter green*/
+	background-color: #959a94 !important;
+}
+
+.border {
+	/* navbar border set to nothing*/
+	border: 0px !important;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
 nav .navbar-brand
 {
     /* size for brand */
