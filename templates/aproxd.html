@@ -5,10 +5,13 @@
 {% endblock %}
 
 {% block main %}
+	<font color="white" size="5">
     <div>
         <p>Your function is $f(x) = {{ value }}$</p>
         <p>Your Linear Approximation of $f(x)$ at $x = {{ h }}$ is ${{ lh }}$</p>
     </div>
+	</font>
+	<font color="white">
         <table class="table" action="optimized">
       <tbody>
         <tr class="bg-dark text-white">
@@ -57,4 +60,5 @@
         </tr>
       </tbody>
     </table>
+	</font>
 {% endblock %}

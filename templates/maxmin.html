@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block main %}
+<font color="white" size="5">
     <span>Function you would like to Max/Min:</span>
     <form action="/maxmin" method="post">
         <div class = "form-group">
@@ -17,6 +18,7 @@
         </div>
         <button class="btn btn-primary" type="submit">Optimize</button>
     </form>
+</font>
 
     <script>
         let value = $("#function").val();

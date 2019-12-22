@@ -15,12 +15,12 @@ background-attachment: fixed;
 }
 
 .table-secondary, .table-secondary>td, .table-secondary>th {
-    background-color: #b6c59d1c;
+    background-color: #0e170114 !important;
 }
 
 .bg-light {
 	/* navbar background set to lighter green*/
-	background-color: #959a94 !important;
+	background-color: #b9c3b8 !important;
 }
 
 .border {
