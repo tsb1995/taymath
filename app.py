@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, Response
 from sympy import *
 from helpers import apology
+import numpy as np
 
 app = Flask(__name__)
 
