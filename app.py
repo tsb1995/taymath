@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, Response
 from sympy import *
 from helpers import apology
 import numpy as np
+from matplotlib import pyplot as plt
 
 app = Flask(__name__)
 
@@ -144,13 +145,29 @@ def maxmin():
         maximum = max(values)
         newvar = min(values)
 
+        # Create Graph
+        lam_f = lambdify(x, f, 'numpy')
+        X = np.linspace(lb-100, ub+100, (ub-lb)*10)
+        y = lam_f(X)
+
+        # plt.figure(figsize=(3,4))
+        plt.scatter(X, y, c='g', marker='.', )
+        max_idx = np.argmax(values)
+        min_idx = np.argmin(values)
+        plt.plot(candidates[max_idx], values[max_idx], c='r', marker='o', ms=10, label='max')
+        plt.plot(candidates[min_idx], values[min_idx], c='b', marker='o', ms=10, label='min')
+        plt.legend()
+        plt.savefig('static/img/new_plot.png')
+        plt.close()
+
         # Turn all into latex
         value = latex(f)
         fprime = latex(fprime)
         for i, solution in enumerate(solutions):
             solutions[i] = latex(solution)
         return render_template("optimized.html", value=value, fprime=fprime, solutions=solutions, lb=lb, ub=ub,
-                               candidates=candidates, newvar=newvar, values=values, maximum=maximum)
+                               candidates=candidates, newvar=newvar, values=values, maximum=maximum,
+                               url='static/img/new_plot.png')
     else:
         return render_template("maxmin.html")
 
