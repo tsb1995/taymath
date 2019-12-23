@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block main %}
+<div class="col-sm-12" style="background-color: #0f11175c; padding: 20px; border-radius: 8px">
 <font color="white" size="5">
     <span>Function you would like to Approximate:</span>
     <form action="/aprox" method="post">
@@ -18,9 +19,10 @@
             <input autocomplete="off" autofocus class="form-control" name="easy" placeholder="Easy Value a" type="text" id="easy">
             <input autocomplete="off" autofocus class="form-control" name="hard" placeholder="Difficult Value for x" type="text" id="hard">
         </div>
-        <button class="btn btn-primary" type="submit">Approximate</button>
+        <button class="btn btn-warning" type="submit">Approximate</button>
     </form>
 </font>
+</div>
 
     <script>
         let value = $("#function").val();

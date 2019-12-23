@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block main %}
+<div class="col-sm-12" style="background-color: #0f11175c; padding: 20px; border-radius: 8px">
 <font color="white" size="5">
     <span>Function you would like to integrate:</span>
     <form action="/riemann" method="post">
@@ -12,7 +13,7 @@
             <input autocomplete="off" autofocus class="form-control" name="function" placeholder="Function" type="text" id="function">
         </div>
         <p id="jp">Your Input Will Appear Here</p>
-        <span>Range of values <i>(a,b)</i>:</span>
+        <span>Range of values <i><b>(a,b)</b></i>:</span>
         <div class = "form-group">
             <input autocomplete="off" autofocus class="form-control" name="lowerbound" placeholder="Lowerbound a" type="text" id="lowerbound">
             <input autocomplete="off" autofocus class="form-control" name="upperbound" placeholder="Upperbound b" type="text" id="upperbound">
@@ -30,9 +31,10 @@
           <label><input type="radio" name="sumtype" value="2"> Right Riemann Sum</label>
         </div>
 		</font>
-        <button class="btn btn-primary" type="submit">Summation</button>
+        <button class="btn btn-warning" type="submit">Summation</button>
     </form>
-
+</font>
+</div>
 
     <script>
         let value = $("#function").val();

@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block main %}
+<div class="col-sm-12" style="background-color: #0f11175c; padding: 20px; border-radius: 8px">
 <font color="white" size="5">
     <span>Function you would like to Max/Min:</span>
     <form action="/maxmin" method="post">
@@ -16,9 +17,10 @@
             <input autocomplete="off" autofocus class="form-control" name="lowerbound" placeholder="Lowerbound" type="text" id="lowerbound">
             <input autocomplete="off" autofocus class="form-control" name="upperbound" placeholder="Upperbound" type="text" id="upperbound">
         </div>
-        <button class="btn btn-primary" type="submit">Optimize</button>
+        <button class="btn btn-warning" type="submit">Optimize</button>
     </form>
 </font>
+</div>
 
     <script>
         let value = $("#function").val();
