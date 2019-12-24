@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, Response
 from sympy import *
 from helpers import apology
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 
 app = Flask(__name__)
@@ -128,7 +130,9 @@ def maxmin():
         # Get Derivative, solve for real solutions, update candidates list
         fprime = f.diff(x)
         solutions = list()
-        solutions.append(round(f.subs(x,0), 3))
+        solution = round(f.subs(x,0), 3)
+        if lb <= solution <= ub:
+            solutions.append(solution)
         candidates = list()
         for solution in solutions:
             candidates.append(solution)
@@ -147,17 +151,17 @@ def maxmin():
 
         # Create Graph
         lam_f = lambdify(x, f, 'numpy')
-        X = np.linspace(lb-100, ub+100, (ub-lb)*10)
+        X = np.linspace(lb, ub, (ub-lb)*10)
         y = lam_f(X)
 
-        # plt.figure(figsize=(3,4))
+        plt.style.use('seaborn-whitegrid')
         plt.scatter(X, y, c='g', marker='.', )
         max_idx = np.argmax(values)
         min_idx = np.argmin(values)
         plt.plot(candidates[max_idx], values[max_idx], c='r', marker='o', ms=10, label='max')
         plt.plot(candidates[min_idx], values[min_idx], c='b', marker='o', ms=10, label='min')
         plt.legend()
-        plt.savefig('static/img/new_plot.png')
+        plt.savefig('static/img/maxmin_plot.png')
         plt.close()
 
         # Turn all into latex
@@ -167,7 +171,7 @@ def maxmin():
             solutions[i] = latex(solution)
         return render_template("optimized.html", value=value, fprime=fprime, solutions=solutions, lb=lb, ub=ub,
                                candidates=candidates, newvar=newvar, values=values, maximum=maximum,
-                               url='static/img/new_plot.png')
+                               url='static/img/maxmin_plot.png')
     else:
         return render_template("maxmin.html")
 
@@ -199,11 +203,33 @@ def aprox():
 
         a = round(a, 3)
         h = round(h, 3)
+
         # Run through Linearization algorithm
         fprime = f.diff(x)
         fa = round(f.subs(x, a), 3)
         fprimea = round(fprime.subs(x, a), 3)
         lh = round(fa + fprimea*(float(h)-float(a)), 3)
+
+        # Create and Save Plot
+        dist = abs(a - h)
+        X = np.linspace(a-dist-100, a + dist+100, (dist)*1000)
+
+        lam_f = lambdify(x, f, 'numpy')
+        lam_fprime = lambdify(x, fprime, 'numpy')
+        X = np.linspace(a-dist-15, a + dist+15, (dist)*1000)
+        y = lam_f(X)
+
+        tan_line = fprimea * (X - a) + fa
+        lam_tan_line = lambdify(x, tan_line, "numpy")
+
+        plt.style.use('seaborn-whitegrid')
+        plt.plot(X, lam_f(X), label='Original f(x)')
+        plt.plot(X, lam_tan_line(X), label='Tangent Line')
+        plt.plot(a, fa, c='r', marker='o', label='Easy Point a')
+        plt.plot(h, lh, c='b', marker='o', label='Approximation of f(h)')
+        plt.legend()
+        plt.savefig('static/img/aprox_plot.png')
+        plt.close()
 
         # Convert to latex for MathJax reading
         value = latex(f)
@@ -211,7 +237,8 @@ def aprox():
         fa = latex(fa)
         lh = latex(lh)
 
-        return render_template("aproxd.html", value=value, fprime=fprime, a=a, h=h, fa=fa, fprimea=fprimea, lh=lh)
+        return render_template("aproxd.html", value=value, fprime=fprime, a=a, h=h, fa=fa, fprimea=fprimea,
+        lh=lh, url='static/img/aprox_plot.png')
     else:
         return render_template("aprox.html")
 
