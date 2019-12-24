@@ -18,7 +18,7 @@ def differentiation():
     if request.method == "POST":
         # Check if inputs were given
         if not request.form.get("function"):
-            return apology("must provide a function", 400)
+            return gif_apology("must provide a function", 400)
         f = request.form.get("function")
 
         # Setup our symbols for SymPy
@@ -229,6 +229,10 @@ def setup_symbols(f):
         f = f.subs(letter, x)
     return f
 
+def gif_apology(message="oopsy", code=400):
+    "Render gif failure"
+    PATH = 'static/img/gifs/reaction' + str(2) + '.gif'
+    return render_template("gif_apology.html", PATH=PATH)
 
 
 if __name__ == '__main__':
