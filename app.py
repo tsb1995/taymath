@@ -126,52 +126,53 @@ def maxmin():
 
         # Setup our symbols for SymPy
         f = setup_symbols(f)
-
-        # Get Derivative, solve for real solutions, update candidates list
-        fprime = f.diff(x)
-        solutions = list()
-        solution = round(f.subs(x,0), 3)
-        if lb <= solution <= ub:
-            solutions.append(solution)
-        candidates = list()
-        for solution in solutions:
-            candidates.append(solution)
-        candidates.append(lb)
-        candidates.append(ub)
-
-        # Fill values list with solutions
-        values = list()
-        for candidate in candidates:
-            temp = round(f.subs(x, candidate), 3)
-            values.append(temp)
-
-        # Find max/min of values
-        maximum = max(values)
-        newvar = min(values)
-
-        # Create Graph
         lam_f = lambdify(x, f, 'numpy')
-        X = np.linspace(lb, ub, (ub-lb)*10)
-        y = lam_f(X)
 
+        # Calculate max/min and store values
+        fprime = f.diff(x)
+        extremaX = solve(fprime, x)
+        extremaY = []
+        candidatesX = [lb, ub]
+        candidatesY = [lam_f(lb), lam_f(ub)]
+        for extrema in extremaX:
+            extremaY.append(lam_f(extrema))
+            if (lb < extrema < ub):
+                candidatesX.append(extrema)
+                candidatesY.append(lam_f(extrema))
+
+        max_input = candidatesX[np.argmax(candidatesY)]
+        min_input = candidatesX[np.argmin(candidatesY)]
+
+        max_output = max(candidatesY)
+        min_output = min(candidatesY)
+
+        # Plot and save figure
+        dist = ub-lb
+        X = np.linspace(lb, ub, (dist)*100)
         plt.style.use('seaborn-whitegrid')
-        plt.scatter(X, y, c='g', marker='.', )
-        max_idx = np.argmax(values)
-        min_idx = np.argmin(values)
-        plt.plot(candidates[max_idx], values[max_idx], c='r', marker='o', ms=10, label='max')
-        plt.plot(candidates[min_idx], values[min_idx], c='b', marker='o', ms=10, label='min')
+        plt.plot(X, lam_f(X))
+        for i in range(2, len(candidatesX)):
+            print(candidatesX[i])
+            epsilon = dist/6
+            templb = int(candidatesX[i] - epsilon)
+            tempub = int(candidatesX[i] + epsilon)
+            tempX = np.linspace(templb, tempub, epsilon*100)
+            line = np.ones(tempX.shape)
+            line = line * candidatesY[i]
+            plt.plot(tempX, line)
+        plt.plot(max_input, max_output, c='r', marker='o', label='Maximum')
+        plt.plot(min_input, min_output, c='b', marker='o', label='Minimum')
         plt.legend()
         plt.savefig('static/img/maxmin_plot.png')
         plt.close()
 
         # Turn all into latex
-        value = latex(f)
+        f = latex(f)
         fprime = latex(fprime)
-        for i, solution in enumerate(solutions):
-            solutions[i] = latex(solution)
-        return render_template("optimized.html", value=value, fprime=fprime, solutions=solutions, lb=lb, ub=ub,
-                               candidates=candidates, newvar=newvar, values=values, maximum=maximum,
-                               url='static/img/maxmin_plot.png')
+        return render_template("optimized.html", ub=ub, lb=lb, max_input=max_input,
+                                max_output=max_output, min_input=min_input, min_output=min_output,
+                               url='static/img/maxmin_plot.png', candidatesX=candidatesX,
+                               candidatesY=candidatesY, f=f, fprime=fprime, extremaX=extremaX)
     else:
         return render_template("maxmin.html")
 
@@ -214,10 +215,11 @@ def aprox():
         dist = abs(a - h)
         X = np.linspace(a-dist-100, a + dist+100, (dist)*1000)
 
+        # Lambdify so we can apply the function to a linspace
         lam_f = lambdify(x, f, 'numpy')
         lam_fprime = lambdify(x, fprime, 'numpy')
+
         X = np.linspace(a-dist-15, a + dist+15, (dist)*1000)
-        y = lam_f(X)
 
         tan_line = fprimea * (X - a) + fa
         lam_tan_line = lambdify(x, tan_line, "numpy")
@@ -239,6 +241,7 @@ def aprox():
 
         return render_template("aproxd.html", value=value, fprime=fprime, a=a, h=h, fa=fa, fprimea=fprimea,
         lh=lh, url='static/img/aprox_plot.png')
+
     else:
         return render_template("aprox.html")
 

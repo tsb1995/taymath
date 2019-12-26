@@ -8,8 +8,8 @@
 <div class="col-sm-12" style="background-color: #0f11175c; padding: 20px">
 	<font color="white" size="5">
     <div>
-        <p>Your function is $f(x) = {{ value }}$</p>
-        <p>Your maximum value is ${{ maximum }}$ and your minimum value is ${{ newvar }}$</p>
+        <p>Your function is $f(x) = {{ f }}$</p>
+        <p>Your maximum value is ${{ max_output }}$ and your minimum value is ${{ min_output }}$</p>
     </div>
 	</font>
 </div>
@@ -36,20 +36,20 @@
             <td>Step 3</td>
             <td>Solve for $x$:</td>
         </tr>
-        {% for solution in solutions %}
+        {% for extrema in extremaX %}
             <tr class="table-secondary">
                 <td></td>
-                <td>$x = {{ solution }}$</td>
+                <td>$x = {{ extrema }}$</td>
             </tr>
         {% endfor %}
         <tr class="bg-dark text-white">
             <td>Step 4</td>
-            <td>Plug solutions and endpoints into $f(x)$:</td>
+            <td>Plug VALID solutions and endpoints into $f(x)$:</td>
         </tr>
-        {% for candidate in candidates %}
+        {% for candidate in candidatesX %}
             <tr class="table-secondary">
                 <td></td>
-                <td>$f({{ candidate }}) = {{values[loop.index - 1]}}$</td>
+                <td>$f({{ candidate }}) = {{candidatesY[loop.index - 1]}}$</td>
             </tr>
         {% endfor %}
         <tr class="bg-dark text-white">
@@ -58,11 +58,11 @@
         </tr>
         <tr class="table-secondary">
             <td></td>
-            <td>Your maximum value is ${{ maximum }}$</td>
+            <td>Your maximum value is ${{ max_output }}$</td>
         </tr>
         <tr class="table-secondary">
             <td></td>
-            <td>Your minimum value is ${{ newvar }}$</td>
+            <td>Your minimum value is ${{ min_output }}$</td>
         </tr>
       </tbody>
     </table>
