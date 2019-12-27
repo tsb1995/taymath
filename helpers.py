@@ -1,7 +1,10 @@
 import requests
-
 from flask import redirect, render_template, request, session
 from functools import wraps
+from sympy import *
+import random
+
+x, y, z, t, X, Y, Z, T = symbols('x y z t X Y Z T')
 
 
 def apology(message, code=400):
@@ -36,3 +39,16 @@ def login_required(f):
 def usd(value):
     """Format value as USD."""
     return f"${value:,.2f}"
+
+def setup_symbols(f):
+    f = sympify(f)
+
+    # replace commonly used variables with x
+    for letter in [x, y, z, t, X, Y, Z, T]:
+        f = f.subs(letter, x)
+    return f
+
+def gif_apology(message="oopsy", code=400):
+    "Render gif failure"
+    PATH = 'static/img/gifs/reaction' + str(random.randint(1,5)) + '.gif'
+    return render_template("gif_apology.html", PATH=PATH)

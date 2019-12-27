@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, Response
 from sympy import *
-from helpers import apology
+from helpers import apology, setup_symbols, gif_apology
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
@@ -251,18 +251,6 @@ def errorhandler(e):
         e = InternalServerError()
     return apology(e.name, e.code)
 
-def setup_symbols(f):
-    f = sympify(f)
-
-    # replace commonly used variables with x
-    for letter in [x, y, z, t, X, Y, Z, T]:
-        f = f.subs(letter, x)
-    return f
-
-def gif_apology(message="oopsy", code=400):
-    "Render gif failure"
-    PATH = 'static/img/gifs/reaction' + str(2) + '.gif'
-    return render_template("gif_apology.html", PATH=PATH)
 
 
 if __name__ == '__main__':
