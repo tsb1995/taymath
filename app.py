@@ -3,6 +3,7 @@ from sympy import *
 from helpers import apology, setup_symbols, gif_apology
 import numpy as np
 import matplotlib
+from matplotlib.patches import Rectangle
 matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 
@@ -75,6 +76,7 @@ def riemann():
 
         # Setup our symbols for SymPy
         f = setup_symbols(f)
+        lam_f = lambdify(x, f, 'numpy')
 
         # Run through Riemann Sum algorithm, creatings lists for display
         #           of inputs, outputs, and areas (their products)
@@ -84,10 +86,10 @@ def riemann():
         inputs = list()
         if sumtype == "1":
             for i in range(0, si):
-                inputs.append(round(dx * (i), 3))
+                inputs.append(round(lb + dx * (i), 3))
         if sumtype == "2":
             for i in range(0, si):
-                inputs.append(round(dx * (i + 1), 3))
+                inputs.append(round(lb + dx * (i + 1), 3))
         outputs = list()
         for input in inputs:
             temp = f.subs(x, input)
@@ -98,13 +100,28 @@ def riemann():
             rectangles.append(round(temp, 3))
         result = round(sum(rectangles), 3)
 
+        # Plot and save figure
+        dist = ub-lb
+        X = np.linspace(lb, ub, (dist)*100)
+        plt.style.use('seaborn-whitegrid')
+        plt.plot(X, lam_f(X))
+        axes = plt.gca()
+        for i in range(si):
+            rect = Rectangle((inputs[i], 0), width=dx, height=outputs[i],edgecolor='w')
+            axes.add_patch(rect)
+        axes.set_xlim(lb-dx, ub+2*dx)
+        axes.set_ylim(0)
+        plt.savefig('static/img/riemann_plot.png')
+        plt.close()
+
+
         # Choose template based on left or right sum
         if sumtype == "1":
             return render_template("summed.html", value=value, sumtype=sumtype, lb=lb, ub=ub, si=si, dx=dx,
-                                   inputs=inputs, outputs=outputs, rectangles=rectangles, result=result)
+                                   inputs=inputs, outputs=outputs, rectangles=rectangles, result=result, url='static/img/riemann_plot.png')
         else:
             return render_template("rightSummed.html", value=value, sumtype=sumtype, lb=lb, ub=ub, si=si, dx=dx,
-                                   inputs=inputs, outputs=outputs, rectangles=rectangles, result=result)
+                                   inputs=inputs, outputs=outputs, rectangles=rectangles, result=result, url='static/img/riemann_plot.png')
     else:
         return render_template("riemann.html")
 
