@@ -8,6 +8,7 @@ matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
 
 # Convert our commonly used variables into sympy symbols
 x, y, z, t, X, Y, Z, T = symbols('x y z t X Y Z T')
