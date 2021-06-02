@@ -11,6 +11,6 @@ mpmath==1.1.0
 numpy==1.17.4
 requests==2.22.0
 sympy==1.4
-urllib3==1.25.7
+urllib3==1.26.5
 Werkzeug==0.16.0
 matplotlib==3.1.2
